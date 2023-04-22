@@ -10,7 +10,7 @@ export class UserModel {
   name: string;
   @Column({ nullable: false })
   email: string;
-  @Column({ nullable: false, enum: UserRole, type: 'enum' })
+  @Column({ nullable: false, enum: UserRole, type: 'enum',default : 'USER' })
   roles: UserRole[];
   @Column({nullable:false})
   password:string
@@ -20,7 +20,6 @@ export class UserModel {
       this.id=values.id;
       this.email=values.email;
       this.name=values.name;
-      this.roles=values.roles;
       this.password=values.password;
     }
   }

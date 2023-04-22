@@ -7,6 +7,9 @@ export class LoginUserDto {
     required: true,
   }) email: string;
   @ApiProperty({
+    description: 'Your password',
+    example: 'You know, the one you registered with',
+    required: true,
 
   }) password:string;
 }

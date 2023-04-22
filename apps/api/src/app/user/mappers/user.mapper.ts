@@ -10,7 +10,6 @@ export class UserMapper{
       id:undefined,
       name:dto.name,
       email:dto.email,
-      roles:dto.roles,
       password:dto.password,
     })
 

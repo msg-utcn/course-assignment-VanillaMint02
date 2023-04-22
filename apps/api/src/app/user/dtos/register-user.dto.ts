@@ -1,5 +1,4 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {UserRole} from "../models/user-roles";
 export class RegisterUserDto{
   @ApiProperty({
     description : 'My name',
@@ -14,13 +13,8 @@ export class RegisterUserDto{
   })
   email:string;
   @ApiProperty({
-    description : 'What is my role in all this?',
-    example : 'USER,ADMIN',
-  })
-  roles:UserRole[];
-
-  @ApiProperty({
     description :"Password needed",
     example : "TheUnbreakableUndefeatableUnfathomablePassword01",
+    required:true,
   }) password : string;
 }
