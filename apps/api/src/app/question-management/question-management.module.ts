@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
-import { QuestionManagementController } from './question-management.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { QuestionModel } from './model/question.model';
+import {Module} from '@nestjs/common';
+import {QuestionManagementController} from './question-management.controller';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {QuestionModel} from './model/question.model';
 import {QuestionService} from "./question.service";
 
 @Module({
@@ -9,5 +9,6 @@ import {QuestionService} from "./question.service";
   controllers: [QuestionManagementController],
   providers: [QuestionService],
 })
-export class QuestionManagementModule {}
+export class QuestionManagementModule {
+}
 
