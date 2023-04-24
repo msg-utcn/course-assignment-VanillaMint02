@@ -1,18 +1,22 @@
-import {BadRequestException, Injectable, Logger, NotFoundException} from "@nestjs/common";
-import {UserModel} from "./models/user.model";
-import {Repository} from "typeorm";
-import {InjectRepository} from "@nestjs/typeorm";
-import {UserDto} from "./dtos/user.dto";
-import {UserMapper} from "./mappers/user.mapper";
-import {RegisterUserDto} from "./dtos/register-user.dto";
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
+import { UserModel } from './models/user.model';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from './dtos/user.dto';
+import { UserMapper } from './mappers/user.mapper';
+import { RegisterUserDto } from './dtos/register-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserModel)
     private userModelRepository: Repository<UserModel>
-  ) {
-  }
+  ) {}
 
   async getUsers(): Promise<UserDto[]> {
     const foundModels = await this.userModelRepository.find();
@@ -38,32 +42,28 @@ export class UserService {
     }
   }
 
+  async getUserByEmail(email: string): Promise<UserDto> {
+    const foundModel = await this.readUserModelByEmail(email);
+    return UserMapper.mapToDto(foundModel);
+  }
+
   private async readUserModelById(id: string): Promise<UserModel> {
     const foundModel = await this.userModelRepository.findOne({
-      where: {id},
+      where: { id },
     });
     if (!foundModel) {
       throw new NotFoundException();
     }
     return foundModel;
   }
-private async readUserModelByEmail(email:string):Promise<UserModel>{
-    const foundModel=await this.userModelRepository.findOne({
-      where: {email},
+
+  private async readUserModelByEmail(email: string): Promise<UserModel> {
+    const foundModel = await this.userModelRepository.findOne({
+      where: { email },
     });
-    if(!foundModel){
+    if (!foundModel) {
       throw new NotFoundException();
     }
     return foundModel;
   }
-    async getUserByEmail(email:string):Promise<UserDto>{
-    const foundModel=await this.readUserModelByEmail(email);
-    return UserMapper.mapToDto(foundModel);
-  }
-
 }
-
-
-
-
-

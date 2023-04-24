@@ -1,27 +1,27 @@
-import {QuestionTopic} from './question-topic';
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { QuestionTopic } from './question-topic';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class QuestionModel {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   title: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   postedBy: string;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   content: string;
 
-  @Column({nullable: false, enum: QuestionTopic, type: 'enum'})
+  @Column({ nullable: false, enum: QuestionTopic, type: 'enum' })
   topic: QuestionTopic;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   rating: number;
 
-  @Column({nullable: false})
+  @Column({ nullable: false })
   creationDate: string;
 
   constructor(values: Partial<QuestionModel>) {

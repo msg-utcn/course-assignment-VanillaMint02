@@ -4,21 +4,20 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {QuestionModel} from './model/question.model';
-import {Repository} from 'typeorm';
-import {QuestionDto} from './dtos/question.dto';
-import {QuestionMapper} from './mappers/question.mapper';
-import {CreateQuestionDto} from './dtos/create-question.dto';
-import {UpdateQuestionDto} from './dtos/update-question.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { QuestionModel } from './model/question.model';
+import { Repository } from 'typeorm';
+import { QuestionDto } from './dtos/question.dto';
+import { QuestionMapper } from './mappers/question.mapper';
+import { CreateQuestionDto } from './dtos/create-question.dto';
+import { UpdateQuestionDto } from './dtos/update-question.dto';
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(QuestionModel)
     private questionModelRepository: Repository<QuestionModel>
-  ) {
-  }
+  ) {}
 
   async readAll(): Promise<QuestionDto[]> {
     const foundModels = await this.questionModelRepository.find();
@@ -61,7 +60,7 @@ export class QuestionService {
   }
 
   async delete(id: string): Promise<void> {
-    const deleteResult = await this.questionModelRepository.delete({id});
+    const deleteResult = await this.questionModelRepository.delete({ id });
     if (deleteResult.affected === 0) {
       throw new BadRequestException();
     }
@@ -69,7 +68,7 @@ export class QuestionService {
 
   private async readModelById(id: string): Promise<QuestionModel> {
     const foundModel = await this.questionModelRepository.findOne({
-      where: {id},
+      where: { id },
     });
     if (!foundModel) {
       throw new NotFoundException();
