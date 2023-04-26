@@ -13,7 +13,6 @@ export class UserDto {
       this.email = values.email;
       this.name = values.name;
       this.roles = values.roles;
-      this.password = values.password;
     }
   }
 }

@@ -10,4 +10,3 @@ import { QuestionService } from './question.service';
   providers: [QuestionService],
 })
 export class QuestionManagementModule {}
-
