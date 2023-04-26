@@ -10,11 +10,14 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { PassportModule } from '@nestjs/passport';
 import { UserService } from '../user/user.service';
+import { QuestionManagementModule } from '../question-management/question-management.module';
+import { QuestionService } from '../question-management/question.service';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
+    QuestionManagementModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -32,6 +35,7 @@ import { UserService } from '../user/user.service';
     JwtStrategy,
     JwtAuthGuard,
     UserService,
+    QuestionService,
   ],
   controllers: [AuthController],
   exports: [JwtAuthGuard, AuthService],
