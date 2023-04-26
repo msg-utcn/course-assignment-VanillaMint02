@@ -26,19 +26,19 @@ export class QuestionManagementController {
   async getAllQuestions(): Promise<QuestionDto[]> {
     return this.questionService.readAll();
   }
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getQuestionById(@Param('id') id: string): Promise<QuestionDto> {
     return this.questionService.readById(id);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createQuestion(@Body() dto: CreateQuestionDto): Promise<QuestionDto> {
     return this.questionService.create(dto);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async deleteQuestion(
     @Param('id') id: string,
@@ -47,7 +47,7 @@ export class QuestionManagementController {
     return this.questionService.update(id, dto);
   }
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async updateQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);

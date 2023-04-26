@@ -25,7 +25,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @ApiBody({ type: LoginUserDto })
   async login(@Request() req): Promise<JwtTokenDto> {
-    return this.authService.login(req.body.email);
+    return this.authService.login(req.user);
   }
 
   @Post('register')
