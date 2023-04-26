@@ -1,7 +1,7 @@
+import { CreateAnswerDto } from '../dtos/create-answer.dto';
+import { UpdateAnswerDto } from '../dtos/update-answer.dto';
+import { AnswerDto } from '../dtos/answer.dto';
 import { AnswerModel } from '../model/answer.model';
-import { AnswerDto } from '../dto/answer.dto';
-import { CreateAnswerDto } from '../dto/create-answer.dto';
-import { UpdateAnswerDto } from '../dto/update-answer.dto';
 
 export class AnswerMapper {
   static mapToDto(model: AnswerModel): AnswerDto {
@@ -13,7 +13,7 @@ export class AnswerMapper {
     });
   }
 
-  static mapCreateAnswerToDto(dto: CreateAnswerDto): AnswerModel {
+  static mapCreateAnswerToModel(dto: CreateAnswerDto): AnswerModel {
     return new AnswerModel({
       id: undefined,
       content: dto.content,

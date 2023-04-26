@@ -27,7 +27,6 @@ export class AuthController {
   async login(@Request() req): Promise<JwtTokenDto> {
     return this.authService.login(req.user);
   }
-
   @Post('register')
   async registerUser(@Body() dto: RegisterUserDto): Promise<UserDto> {
     return this.usersService.create(dto);

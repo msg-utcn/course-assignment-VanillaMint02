@@ -12,6 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { UserService } from '../user/user.service';
 import { QuestionManagementModule } from '../question-management/question-management.module';
 import { QuestionService } from '../question-management/question.service';
+import { AnswerService } from '../question-management/answer.service';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { QuestionService } from '../question-management/question.service';
     JwtAuthGuard,
     UserService,
     QuestionService,
+    AnswerService,
   ],
   controllers: [AuthController],
   exports: [JwtAuthGuard, AuthService],

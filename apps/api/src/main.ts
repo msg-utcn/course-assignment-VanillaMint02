@@ -11,6 +11,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { QuestionManagementConfig } from './app/question-management/question-management.config';
 import { AuthConfig } from './app/auth/auth.config';
 import { UserConfig } from './app/user/user.config';
+import { AnswerConfig } from './app/question-management/answer.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
