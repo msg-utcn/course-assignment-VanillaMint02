@@ -21,6 +21,7 @@ export class AnswerMapper {
       creationDate: new Date(),
     });
   }
+
   static mapUpdateAnswerToModel(
     dto: UpdateAnswerDto,
     oldModel: AnswerModel

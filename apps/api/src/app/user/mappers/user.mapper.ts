@@ -1,6 +1,7 @@
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { UserModel } from '../models/user.model';
 import { UserDto } from '../dtos/user.dto';
+
 export class UserMapper {
   static mapCreateUserToModel(dto: RegisterUserDto): UserModel {
     return new UserModel({

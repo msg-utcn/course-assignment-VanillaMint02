@@ -20,6 +20,7 @@ export class AuthService {
     }
     return null;
   }
+
   async login(dto: JwtPayloadDto): Promise<JwtTokenDto> {
     return {
       access_token: this.jwtService.sign({

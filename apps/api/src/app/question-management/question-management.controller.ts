@@ -45,10 +45,12 @@ export class QuestionManagementController {
   async createQuestion(@Body() dto: CreateQuestionDto): Promise<QuestionDto> {
     return this.questionService.create(dto);
   }
+
   @Post(AnswerConfig.API_ROUTE)
   async createAnswer(@Body() dto: CreateAnswerDto): Promise<AnswerDto> {
     return this.answerService.create(dto);
   }
+
   @Patch(':id')
   async updateQuestion(
     @Param('id') id: string,
@@ -61,6 +63,7 @@ export class QuestionManagementController {
   async deleteQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);
   }
+
   @Get()
   async getAllAnswers() {
     return this.answerService.readAll();
@@ -70,6 +73,7 @@ export class QuestionManagementController {
   async deleteAnswer(@Param('id') id: string): Promise<void> {
     return this.answerService.delete(id);
   }
+
   @Patch(AnswerConfig.API_ROUTE + '/id:')
   async editAnswer(
     @Param('id') id: string,

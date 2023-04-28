@@ -28,6 +28,6 @@ import { UserModule } from './user/user.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [AuthModule],
+  providers: [],
 })
 export class AppModule {}

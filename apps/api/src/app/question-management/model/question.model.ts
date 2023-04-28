@@ -1,11 +1,11 @@
 import { QuestionTopic } from './question-topic';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { AnswerModel } from './answer.model';
 
 @Entity()
 export class QuestionModel {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
-
   @Column({ nullable: false })
   title: string;
 

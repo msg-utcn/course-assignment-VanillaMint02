@@ -11,6 +11,7 @@ import { UpdateAnswerDto } from './dtos/update-answer.dto';
 import { AnswerModel } from './model/answer.model';
 import { AnswerMapper } from './mappers/answer.mapper';
 import { CreateAnswerDto } from './dtos/create-answer.dto';
+import { logger } from 'nx/src/utils/logger';
 
 @Injectable()
 export class AnswerService {

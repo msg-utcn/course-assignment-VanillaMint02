@@ -14,6 +14,7 @@ import { LoginUserDto } from './dtos/login-user.dto';
 import { compare, hash } from 'bcrypt';
 import * as bcrypt from 'bcrypt';
 import { saltOrRounds } from './user.config';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -47,6 +48,16 @@ export class UserService {
     return UserMapper.mapToDto(foundModel);
   }
 
+  async checkCredentials(loginUserDto: LoginUserDto): Promise<boolean> {
+    const foundModel = await this.userModelRepository.findOneBy({
+      email: loginUserDto.email,
+    });
+    if (!foundModel) {
+      return false;
+    }
+    return compare(loginUserDto.password, foundModel.password);
+  }
+
   private async readUserModelById(id: string): Promise<UserModel> {
     const foundModel = await this.userModelRepository.findOne({
       where: { id },
@@ -65,14 +76,5 @@ export class UserService {
       throw new NotFoundException();
     }
     return foundModel;
-  }
-  async checkCredentials(loginUserDto: LoginUserDto): Promise<boolean> {
-    const foundModel = await this.userModelRepository.findOneBy({
-      email: loginUserDto.email,
-    });
-    if (!foundModel) {
-      return false;
-    }
-    return compare(loginUserDto.password, foundModel.password);
   }
 }
