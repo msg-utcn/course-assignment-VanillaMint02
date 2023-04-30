@@ -10,6 +10,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserDto } from './dtos/user.dto';
 import { UserMapper } from './mappers/user.mapper';
 import { RegisterUserDto } from './dtos/register-user.dto';
+import { LoginUserDto } from './dtos/login-user.dto';
+import { compare, hash } from 'bcrypt';
+import * as bcrypt from 'bcrypt';
+import { saltOrRounds } from './user.config';
 
 @Injectable()
 export class UserService {
@@ -32,19 +36,26 @@ export class UserService {
   }
 
   async create(dto: RegisterUserDto): Promise<UserDto> {
-    const model = UserMapper.mapCreateUserToModel(dto);
-    try {
-      const savedModel = await this.userModelRepository.save(model);
-      return UserMapper.mapToDto(savedModel);
-    } catch (error) {
-      Logger.log(error, 'UserService.create');
-      throw new BadRequestException();
-    }
+    const password = dto.password;
+    const hashedPassword = await bcrypt.hash(password, saltOrRounds);
+    const model = UserMapper.mapRegisterDtoToModel(dto, hashedPassword);
+    const savedModel = await this.userModelRepository.save(model);
+    return UserMapper.mapToDto(savedModel);
   }
 
   async getUserByEmail(email: string): Promise<UserDto> {
     const foundModel = await this.readUserModelByEmail(email);
     return UserMapper.mapToDto(foundModel);
+  }
+
+  async checkCredentials(loginUserDto: LoginUserDto): Promise<boolean> {
+    const foundModel = await this.userModelRepository.findOneBy({
+      email: loginUserDto.email,
+    });
+    if (!foundModel) {
+      return false;
+    }
+    return compare(loginUserDto.password, foundModel.password);
   }
 
   private async readUserModelById(id: string): Promise<UserModel> {

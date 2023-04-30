@@ -8,5 +8,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([UserModel])],
   controllers: [UserController],
   providers: [UserService],
+  exports: [TypeOrmModule, UserService],
 })
 export class UserModule {}

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { QuestionManagementModule } from './question-management/question-management.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     }),
     QuestionManagementModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

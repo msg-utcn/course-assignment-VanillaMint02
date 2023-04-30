@@ -1,32 +1,24 @@
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserConfig } from './user.config';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dtos/user.dto';
-import { RegisterUserDto } from './dtos/register-user.dto';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags(UserConfig.SWAGGER_FEATURE)
 @Controller(UserConfig.API_ROUTE)
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(private usersService: UserService) {}
+
+  @Get(':id')
+  async getUserById(@Param('id') id: string): Promise<UserDto> {
+    return this.usersService.getUserById(id);
+  }
 
   @Get()
   async getUsers(): Promise<UserDto[]> {
-    return this.userService.getUsers();
-  }
-
-  @Get('email')
-  async getUserByEmail(@Param('email') email: string): Promise<UserDto> {
-    return this.userService.getUserById(email);
-  }
-
-  @Get('id')
-  async getUserById(@Param('id') id: string): Promise<UserDto> {
-    return this.userService.getUserById(id);
-  }
-
-  @Post()
-  async registerUser(@Body() dto: RegisterUserDto): Promise<UserDto> {
-    return this.userService.create(dto);
+    return this.usersService.getUsers();
   }
 }
