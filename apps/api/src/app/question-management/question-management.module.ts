@@ -5,14 +5,11 @@ import { QuestionModel } from './model/question.model';
 import { QuestionService } from './question.service';
 import { AnswerService } from './answer.service';
 import { AnswerModel } from './model/answer.model';
-import {UserModule} from "../user/user.module";
-import {APP_GUARD} from "@nestjs/core";
-import {RolesGuard} from "../auth/roles.guard";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([QuestionModel,AnswerModel]),
-    UserModule,
+    TypeOrmModule.forFeature([QuestionModel]),
+    TypeOrmModule.forFeature([AnswerModel]),
   ],
   controllers: [QuestionManagementController],
   providers: [QuestionService, AnswerService],

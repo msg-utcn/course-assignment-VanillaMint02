@@ -11,16 +11,12 @@ import { QuestionDto } from './dtos/question.dto';
 import { QuestionMapper } from './mappers/question.mapper';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { UpdateQuestionDto } from './dtos/update-question.dto';
-import {UserModel} from "../user/models/user.model";
-import {logger} from "nx/src/utils/logger";
 
 @Injectable()
 export class QuestionService {
   constructor(
     @InjectRepository(QuestionModel)
-    private questionModelRepository: Repository<QuestionModel>,
-    @InjectRepository(UserModel)
-  private userModelRepository:Repository<UserModel>,
+    private questionModelRepository: Repository<QuestionModel>
   ) {}
 
   async readAll(): Promise<QuestionDto[]> {
@@ -30,46 +26,19 @@ export class QuestionService {
     }
     return foundModels.map((model) => QuestionMapper.mapToDto(model));
   }
-  async readAllByUser(userId:string): Promise<QuestionDto[]> {
-    const foundUser=await this.userModelRepository.findOneBy({id:userId})
-    if(!foundUser){
-      throw new NotFoundException("User not found");
-    }
-    const foundModels = await this.questionModelRepository.find(
-      {
-        where: { user: { id: userId } },
-        relations: ['user'],
-      }
-    );
-    if (!foundModels) {
-      return [];
-    }
-    return foundModels.map((model) => QuestionMapper.mapToDto(model));
-  }
+
   async readById(id: string): Promise<QuestionDto> {
     const foundModel = await this.readModelById(id);
     return QuestionMapper.mapToDto(foundModel);
   }
 
-  async create(dto: CreateQuestionDto,
-  userId:string): Promise<QuestionDto> {
-    const userModel=await this.userModelRepository.findOneBy({id:userId})
-    logger.log(userModel)
-    const model = QuestionMapper.mapCreateQuestionToModel(dto,userModel);
-    logger.log(model.user);
-    if (!userModel ){
-      logger.log("Cannot find user");
-      throw new BadRequestException();
-    }
-    else
-    if (!model ){
-      logger.log("Cannot find question")
-      throw new BadRequestException();
-    }
+  async create(dto: CreateQuestionDto): Promise<QuestionDto> {
+    const model = QuestionMapper.mapCreateQuestionToModel(dto);
     try {
       const savedModel = await this.questionModelRepository.save(model);
       return QuestionMapper.mapToDto(savedModel);
     } catch (error) {
+      Logger.log(error, 'QuestionService.create');
       throw new BadRequestException();
     }
   }

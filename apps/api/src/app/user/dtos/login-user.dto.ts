@@ -10,7 +10,7 @@ export class LoginUserDto {
 
   @ApiProperty({
     description: 'The password of the user',
-    example: 'TheUnbreakableUndefeatableUnfathomablePassword01',
+    example: 'LalaLand',
     required: true,
   })
   password: string;

@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -10,15 +11,13 @@ import { UpdateAnswerDto } from './dtos/update-answer.dto';
 import { AnswerModel } from './model/answer.model';
 import { AnswerMapper } from './mappers/answer.mapper';
 import { CreateAnswerDto } from './dtos/create-answer.dto';
-import { QuestionModel } from './model/question.model';
+import { logger } from 'nx/src/utils/logger';
 
 @Injectable()
 export class AnswerService {
   constructor(
     @InjectRepository(AnswerModel)
-    private answerModelRepository: Repository<AnswerModel>,
-    @InjectRepository(QuestionModel)
-    private questionModelRepository: Repository<QuestionModel>
+    private answerModelRepository: Repository<AnswerModel>
   ) {}
 
   async readAll(): Promise<AnswerDto[]> {
@@ -34,18 +33,13 @@ export class AnswerService {
     return AnswerMapper.mapToDto(foundModel);
   }
 
-  async create(dto: CreateAnswerDto, questionId: string): Promise<AnswerDto> {
-    const foundQuestion = await this.questionModelRepository.findOneBy({
-      id: questionId,
-    });
-    const model = AnswerMapper.mapCreateAnswerToModel(dto, foundQuestion);
-    if (!foundQuestion && !model) {
-      throw new BadRequestException();
-    }
+  async create(dto: CreateAnswerDto): Promise<AnswerDto> {
+    const model = AnswerMapper.mapCreateAnswerToModel(dto);
     try {
       const savedModel = await this.answerModelRepository.save(model);
       return AnswerMapper.mapToDto(savedModel);
     } catch (error) {
+      Logger.log(error, 'QuestionService.create');
       throw new BadRequestException();
     }
   }
@@ -58,6 +52,7 @@ export class AnswerService {
       const savedModel = await this.answerModelRepository.save(updatedModel);
       return AnswerMapper.mapToDto(savedModel);
     } catch (error) {
+      Logger.log(error, 'QuestionService.update');
       throw new BadRequestException();
     }
   }
@@ -77,15 +72,5 @@ export class AnswerService {
       throw new NotFoundException();
     }
     return foundModel;
-  }
-  async readAllByQuestionId(questionId: string): Promise<AnswerDto[]> {
-    const foundModels = await this.answerModelRepository.find({
-      where: { parent: { id: questionId } },
-      relations: ['parent'],
-    });
-    if (!foundModels) {
-      return [];
-    }
-    return foundModels.map((model) => AnswerMapper.mapToDto(model));
   }
 }
