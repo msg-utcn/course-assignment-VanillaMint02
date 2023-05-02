@@ -9,6 +9,7 @@ export class UserMapper {
       name: dto.name,
       email: dto.email,
       password: dto.password,
+      questions:[],
     });
   }
 
