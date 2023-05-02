@@ -7,10 +7,4 @@ export class CreateAnswerDto {
     required: true,
   })
   content: string;
-  @ApiProperty({
-    description: 'The ID of the parent question',
-    example: 'any uuid saved as the ID of a question',
-    required: true,
-  })
-  parentId: string;
 }

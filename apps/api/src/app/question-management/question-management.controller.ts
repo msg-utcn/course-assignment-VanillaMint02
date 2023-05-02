@@ -1,25 +1,19 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { QuestionDto } from './dtos/question.dto';
-import { QuestionService } from './question.service';
-import { CreateQuestionDto } from './dtos/create-question.dto';
-import { UpdateQuestionDto } from './dtos/update-question.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { QuestionManagementConfig } from './question-management.config';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { AnswerService } from './answer.service';
-import { AnswerDto } from './dtos/answer.dto';
-import { AnswerConfig } from './answer.config';
-import { UpdateAnswerDto } from './dtos/update-answer.dto';
-import { CreateAnswerDto } from './dtos/create-answer.dto';
+import {Body, Controller, Delete, Get, Param, Patch, Post, UseGuards,} from '@nestjs/common';
+import {QuestionDto} from './dtos/question.dto';
+import {QuestionService} from './question.service';
+import {CreateQuestionDto} from './dtos/create-question.dto';
+import {UpdateQuestionDto} from './dtos/update-question.dto';
+import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {QuestionManagementConfig} from './question-management.config';
+import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
+import {AnswerService} from './answer.service';
+import {AnswerDto} from './dtos/answer.dto';
+import {AnswerConfig} from './answer.config';
+import {UpdateAnswerDto} from './dtos/update-answer.dto';
+import {CreateAnswerDto} from './dtos/create-answer.dto';
+import {Roles} from "../auth/roles.decorator";
+import {UserRole} from "../user/models/user-roles";
+import {RolesGuard} from "../auth/roles.guard";
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -29,10 +23,16 @@ export class QuestionManagementController {
   constructor(
     private questionService: QuestionService,
     private answerService: AnswerService
-  ) {}
+  ) {
+  }
+
+  @Get("userId/:userId")
+  async getAllQuestionsByUserId(@Param('userId') userId: string): Promise<QuestionDto[]> {
+    return this.questionService.readAllByUser(userId);
+  }
 
   @Get()
-  async getAllQuestions(): Promise<QuestionDto[]> {
+  async getAllQuestions() {
     return this.questionService.readAll();
   }
 
@@ -41,14 +41,9 @@ export class QuestionManagementController {
     return this.questionService.readById(id);
   }
 
-  @Post()
-  async createQuestion(@Body() dto: CreateQuestionDto): Promise<QuestionDto> {
-    return this.questionService.create(dto);
-  }
-
-  @Post(AnswerConfig.API_ROUTE)
-  async createAnswer(@Body() dto: CreateAnswerDto): Promise<AnswerDto> {
-    return this.answerService.create(dto);
+  @Post("userId/:userId")
+  async createQuestion(@Body() dto: CreateQuestionDto, @Param("userId") userId: string): Promise<QuestionDto> {
+    return this.questionService.create(dto, userId);
   }
 
   @Patch(':id')
@@ -60,13 +55,17 @@ export class QuestionManagementController {
   }
 
   @Delete(':id')
+  @Roles(UserRole.ADMIN)
+  @UseGuards(RolesGuard)
   async deleteQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);
   }
 
-  @Get()
-  async getAllAnswers() {
-    return this.answerService.readAll();
+  @Get(':questionId/answers')
+  async getAllAnswers(
+    @Param('questionId') questionId: string
+  ): Promise<AnswerDto[]> {
+    return this.answerService.readAllByQuestionId(questionId);
   }
 
   @Delete(AnswerConfig.API_ROUTE + '/:id')
@@ -80,5 +79,13 @@ export class QuestionManagementController {
     @Body() dto: UpdateAnswerDto
   ): Promise<AnswerDto> {
     return this.answerService.update(id, dto);
+  }
+
+  @Post(':questionId/answers')
+  async addAnswer(
+    @Body() answerDto: CreateAnswerDto,
+    @Param('questionId') questionId: string
+  ): Promise<AnswerDto> {
+    return this.answerService.create(answerDto, questionId);
   }
 }

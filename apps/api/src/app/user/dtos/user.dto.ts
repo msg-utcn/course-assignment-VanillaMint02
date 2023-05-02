@@ -28,7 +28,7 @@ export class UserDto {
   roles: UserRole[];
   @ApiProperty({
     description: 'The Password of the user',
-    example: 'TheUnbeatableUnknownPassword',
+    example: 'TheUnbeatableUnknownPassword01',
     required: true,
   })
   password: string;
