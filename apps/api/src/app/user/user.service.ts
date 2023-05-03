@@ -68,7 +68,7 @@ export class UserService {
     return foundModel;
   }
 
-  private async readUserModelByEmail(email: string): Promise<UserModel> {
+   private async readUserModelByEmail(email: string): Promise<UserModel> {
     const foundModel = await this.userModelRepository.findOne({
       where: { email },
     });

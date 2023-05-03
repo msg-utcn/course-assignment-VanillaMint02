@@ -68,7 +68,7 @@ export class QuestionManagementController {
 
   @Delete(':id')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard, JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @ApiForbiddenResponse({
       description: "What happens if someone tries to disturb the force"
     }

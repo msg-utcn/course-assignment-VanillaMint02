@@ -27,7 +27,6 @@ export class AuthService {
         email: dto.email,
         sub: dto.userId,
       }),
-      userRole:dto.userRole,
     };
   }
 }
