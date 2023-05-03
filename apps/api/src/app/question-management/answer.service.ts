@@ -11,6 +11,7 @@ import { AnswerModel } from './model/answer.model';
 import { AnswerMapper } from './mappers/answer.mapper';
 import { CreateAnswerDto } from './dtos/create-answer.dto';
 import { QuestionModel } from './model/question.model';
+import {UserModel} from "../user/models/user.model";
 
 @Injectable()
 export class AnswerService {
@@ -18,7 +19,9 @@ export class AnswerService {
     @InjectRepository(AnswerModel)
     private answerModelRepository: Repository<AnswerModel>,
     @InjectRepository(QuestionModel)
-    private questionModelRepository: Repository<QuestionModel>
+    private questionModelRepository: Repository<QuestionModel>,
+    @InjectRepository(UserModel)
+    private userModelRepository:Repository<UserModel>
   ) {}
 
   async readAll(): Promise<AnswerDto[]> {
@@ -34,12 +37,13 @@ export class AnswerService {
     return AnswerMapper.mapToDto(foundModel);
   }
 
-  async create(dto: CreateAnswerDto, questionId: string): Promise<AnswerDto> {
+  async create(dto: CreateAnswerDto, questionId: string,userId:string): Promise<AnswerDto> {
     const foundQuestion = await this.questionModelRepository.findOneBy({
       id: questionId,
     });
-    const model = AnswerMapper.mapCreateAnswerToModel(dto, foundQuestion);
-    if (!foundQuestion && !model) {
+    const foundUser=await this.userModelRepository.findOneBy({id:userId});
+    const model = AnswerMapper.mapCreateAnswerToModel(dto, foundQuestion,foundUser);
+    if (!foundQuestion && !model && !foundUser) {
       throw new BadRequestException();
     }
     try {
@@ -82,6 +86,16 @@ export class AnswerService {
     const foundModels = await this.answerModelRepository.find({
       where: { parent: { id: questionId } },
       relations: ['parent'],
+    });
+    if (!foundModels) {
+      return [];
+    }
+    return foundModels.map((model) => AnswerMapper.mapToDto(model));
+  }
+  async readAllByUserId(userId:string):Promise<AnswerDto[]>{
+    const foundModels = await this.answerModelRepository.find({
+      where: { parent: { id: userId } },
+      relations: ['postingUser'],
     });
     if (!foundModels) {
       return [];

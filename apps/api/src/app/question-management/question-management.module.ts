@@ -6,7 +6,6 @@ import { QuestionService } from './question.service';
 import { AnswerService } from './answer.service';
 import { AnswerModel } from './model/answer.model';
 import {UserModule} from "../user/user.module";
-import {APP_GUARD} from "@nestjs/core";
 import {RolesGuard} from "../auth/roles.guard";
 
 @Module({
@@ -15,7 +14,7 @@ import {RolesGuard} from "../auth/roles.guard";
     UserModule,
   ],
   controllers: [QuestionManagementController],
-  providers: [QuestionService, AnswerService],
+  providers: [QuestionService, AnswerService,RolesGuard],
   exports: [QuestionService, TypeOrmModule, AnswerService],
 })
 export class QuestionManagementModule {}

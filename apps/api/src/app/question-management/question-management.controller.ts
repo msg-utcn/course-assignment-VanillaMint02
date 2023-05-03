@@ -3,7 +3,7 @@ import {QuestionDto} from './dtos/question.dto';
 import {QuestionService} from './question.service';
 import {CreateQuestionDto} from './dtos/create-question.dto';
 import {UpdateQuestionDto} from './dtos/update-question.dto';
-import {ApiBearerAuth, ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiForbiddenResponse, ApiTags} from '@nestjs/swagger';
 import {QuestionManagementConfig} from './question-management.config';
 import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
 import {AnswerService} from './answer.service';
@@ -41,6 +41,18 @@ export class QuestionManagementController {
     return this.questionService.readById(id);
   }
 
+  @Get('answers/:userId')
+  async getAllAnswersByUser(
+    @Param('userId') userId: string
+  ): Promise<AnswerDto[]> {
+    return this.answerService.readAllByQuestionId(userId);
+  }
+
+  @Get('answers/:userId')
+  async getAllAnswersByUserId(@Param('userId') userId:string):Promise<AnswerDto[]>{
+    return this.answerService.readAllByUserId(userId);
+  }
+
   @Post("userId/:userId")
   async createQuestion(@Body() dto: CreateQuestionDto, @Param("userId") userId: string): Promise<QuestionDto> {
     return this.questionService.create(dto, userId);
@@ -56,10 +68,16 @@ export class QuestionManagementController {
 
   @Delete(':id')
   @Roles(UserRole.ADMIN)
-  @UseGuards(RolesGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
+  @ApiForbiddenResponse({
+      description: "What happens if someone tries to disturb the force"
+    }
+  )
   async deleteQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);
   }
+
+
 
   @Get(':questionId/answers')
   async getAllAnswers(
@@ -81,11 +99,12 @@ export class QuestionManagementController {
     return this.answerService.update(id, dto);
   }
 
-  @Post(':questionId/answers')
+  @Post(':questionId/:userId/answers')
   async addAnswer(
     @Body() answerDto: CreateAnswerDto,
-    @Param('questionId') questionId: string
+    @Param('questionId') questionId: string,
+    @Param('userId') userId: string,
   ): Promise<AnswerDto> {
-    return this.answerService.create(answerDto, questionId);
+    return this.answerService.create(answerDto, questionId, userId);
   }
 }
