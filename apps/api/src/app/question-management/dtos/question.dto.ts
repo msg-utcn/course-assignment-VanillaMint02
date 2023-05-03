@@ -1,5 +1,5 @@
-import { QuestionTopic } from '../model/question-topic';
-import { ApiProperty } from '@nestjs/swagger';
+import {QuestionTopic} from '../model/question-topic';
+import {ApiProperty} from '@nestjs/swagger';
 
 export class QuestionDto {
   @ApiProperty({
@@ -47,11 +47,12 @@ export class QuestionDto {
   })
   creationDate: string;
   @ApiProperty({
-    description : 'The id of the user who owns this question',
-    example : 'an ID generated beforehand',
-    required:true,
+    description: 'The id of the user who owns this question',
+    example: 'an ID generated beforehand',
+    required: true,
   })
- userId:string;
+  userId: string;
+
   constructor(values: Partial<QuestionDto>) {
     if (values) {
       this.id = values.id;
@@ -61,7 +62,7 @@ export class QuestionDto {
       this.topic = values.topic;
       this.rating = values.rating;
       this.creationDate = values.creationDate;
-      this.userId=values.userId;
+      this.userId = values.userId;
     }
   }
 }

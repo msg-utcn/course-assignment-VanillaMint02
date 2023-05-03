@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 
 export class AnswerDto {
   @ApiProperty({
@@ -32,10 +32,10 @@ export class AnswerDto {
   })
   parentId: string;
   @ApiProperty({
-    description:'The id of the posting user',
-    required : true,
+    description: 'The id of the posting user',
+    required: true,
   })
-  userId:string;
+  userId: string;
 
   constructor(values: Partial<AnswerDto>) {
     if (values) {

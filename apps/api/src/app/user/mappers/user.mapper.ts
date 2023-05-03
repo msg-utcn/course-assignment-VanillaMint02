@@ -1,6 +1,6 @@
-import { RegisterUserDto } from '../dtos/register-user.dto';
-import { UserModel } from '../models/user.model';
-import { UserDto } from '../dtos/user.dto';
+import {RegisterUserDto} from '../dtos/register-user.dto';
+import {UserModel} from '../models/user.model';
+import {UserDto} from '../dtos/user.dto';
 import {LoginUserDto} from "../dtos/login-user.dto";
 
 export class UserMapper {
@@ -10,8 +10,8 @@ export class UserMapper {
       name: dto.name,
       email: dto.email,
       password: dto.password,
-      questions:[],
-      answers:[],
+      questions: [],
+      answers: [],
     });
   }
 

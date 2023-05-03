@@ -18,11 +18,11 @@ export class AnswerModel {
     cascade: true,
   })
   parent: QuestionModel;
-  @ManyToOne(()=>UserModel,(user)=>user.answers,{
-  nullable: false,
-  cascade: true,
-})
-  postingUser:UserModel;
+  @ManyToOne(() => UserModel, (user) => user.answers, {
+    nullable: false,
+    cascade: true,
+  })
+  postingUser: UserModel;
 
   constructor(values: Partial<AnswerModel>) {
     if (values) {
@@ -31,7 +31,7 @@ export class AnswerModel {
       this.rating = values.rating;
       this.creationDate = values.creationDate;
       this.parent = values.parent;
-      this.postingUser=values.postingUser;
+      this.postingUser = values.postingUser;
     }
   }
 }

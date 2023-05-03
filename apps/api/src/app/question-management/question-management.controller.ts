@@ -49,7 +49,7 @@ export class QuestionManagementController {
   }
 
   @Get('answers/:userId')
-  async getAllAnswersByUserId(@Param('userId') userId:string):Promise<AnswerDto[]>{
+  async getAllAnswersByUserId(@Param('userId') userId: string): Promise<AnswerDto[]> {
     return this.answerService.readAllByUserId(userId);
   }
 
@@ -76,7 +76,6 @@ export class QuestionManagementController {
   async deleteQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);
   }
-
 
 
   @Get(':questionId/answers')

@@ -42,7 +42,7 @@ export class QuestionModel {
       this.rating = values.rating;
       this.creationDate = values.creationDate;
       this.answers = values.answers;
-      this.user=values.user;
+      this.user = values.user;
     }
   }
 }

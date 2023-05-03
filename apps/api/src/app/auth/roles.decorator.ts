@@ -1,4 +1,4 @@
-import { SetMetadata } from '@nestjs/common';
+import {SetMetadata} from '@nestjs/common';
 import {UserRole} from "../user/models/user-roles";
 
 
