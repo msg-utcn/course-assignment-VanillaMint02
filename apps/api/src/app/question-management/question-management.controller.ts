@@ -1,19 +1,28 @@
-import {Body, Controller, Delete, Get, Param, Patch, Post, UseGuards,} from '@nestjs/common';
-import {QuestionDto} from './dtos/question.dto';
-import {QuestionService} from './question.service';
-import {CreateQuestionDto} from './dtos/create-question.dto';
-import {UpdateQuestionDto} from './dtos/update-question.dto';
-import {ApiBearerAuth, ApiForbiddenResponse, ApiTags} from '@nestjs/swagger';
-import {QuestionManagementConfig} from './question-management.config';
-import {JwtAuthGuard} from '../auth/guards/jwt-auth.guard';
-import {AnswerService} from './answer.service';
-import {AnswerDto} from './dtos/answer.dto';
-import {AnswerConfig} from './answer.config';
-import {UpdateAnswerDto} from './dtos/update-answer.dto';
-import {CreateAnswerDto} from './dtos/create-answer.dto';
-import {Roles} from "../auth/roles.decorator";
-import {UserRole} from "../user/models/user-roles";
-import {RolesGuard} from "../auth/roles.guard";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { QuestionDto } from './dtos/question.dto';
+import { QuestionService } from './question.service';
+import { CreateQuestionDto } from './dtos/create-question.dto';
+import { UpdateQuestionDto } from './dtos/update-question.dto';
+import { ApiBearerAuth, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
+import { QuestionManagementConfig } from './question-management.config';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AnswerService } from './answer.service';
+import { AnswerDto } from './dtos/answer.dto';
+import { AnswerConfig } from './answer.config';
+import { UpdateAnswerDto } from './dtos/update-answer.dto';
+import { CreateAnswerDto } from './dtos/create-answer.dto';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../user/models/user-roles';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -23,11 +32,12 @@ export class QuestionManagementController {
   constructor(
     private questionService: QuestionService,
     private answerService: AnswerService
-  ) {
-  }
+  ) {}
 
-  @Get("userId/:userId")
-  async getAllQuestionsByUserId(@Param('userId') userId: string): Promise<QuestionDto[]> {
+  @Get('userId/:userId')
+  async getAllQuestionsByUserId(
+    @Param('userId') userId: string
+  ): Promise<QuestionDto[]> {
     return this.questionService.readAllByUser(userId);
   }
 
@@ -49,12 +59,17 @@ export class QuestionManagementController {
   }
 
   @Get('answers/:userId')
-  async getAllAnswersByUserId(@Param('userId') userId: string): Promise<AnswerDto[]> {
+  async getAllAnswersByUserId(
+    @Param('userId') userId: string
+  ): Promise<AnswerDto[]> {
     return this.answerService.readAllByUserId(userId);
   }
 
-  @Post("userId/:userId")
-  async createQuestion(@Body() dto: CreateQuestionDto, @Param("userId") userId: string): Promise<QuestionDto> {
+  @Post('userId/:userId')
+  async createQuestion(
+    @Body() dto: CreateQuestionDto,
+    @Param('userId') userId: string
+  ): Promise<QuestionDto> {
     return this.questionService.create(dto, userId);
   }
 
@@ -70,13 +85,11 @@ export class QuestionManagementController {
   @Roles(UserRole.ADMIN)
   @UseGuards(RolesGuard)
   @ApiForbiddenResponse({
-      description: "What happens if someone tries to disturb the force"
-    }
-  )
+    description: 'What happens if someone tries to disturb the force',
+  })
   async deleteQuestion(@Param('id') id: string): Promise<void> {
     return this.questionService.delete(id);
   }
-
 
   @Get(':questionId/answers')
   async getAllAnswers(
@@ -102,7 +115,7 @@ export class QuestionManagementController {
   async addAnswer(
     @Body() answerDto: CreateAnswerDto,
     @Param('questionId') questionId: string,
-    @Param('userId') userId: string,
+    @Param('userId') userId: string
   ): Promise<AnswerDto> {
     return this.answerService.create(answerDto, questionId, userId);
   }

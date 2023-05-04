@@ -1,5 +1,5 @@
-import {ApiProperty} from '@nestjs/swagger';
-import {UserRole} from "../../user/models/user-roles";
+import { ApiProperty } from '@nestjs/swagger';
+import { UserRole } from '../../user/models/user-roles';
 
 export class JwtPayloadDto {
   @ApiProperty()
@@ -10,5 +10,4 @@ export class JwtPayloadDto {
 
   @ApiProperty()
   sub: string;
-
 }

@@ -1,5 +1,5 @@
-import {QuestionTopic} from '../model/question-topic';
-import {ApiProperty} from '@nestjs/swagger';
+import { QuestionTopic } from '../model/question-topic';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class QuestionDto {
   @ApiProperty({

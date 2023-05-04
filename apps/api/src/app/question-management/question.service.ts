@@ -4,16 +4,16 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import {InjectRepository} from '@nestjs/typeorm';
-import {QuestionModel} from './model/question.model';
-import {Repository} from 'typeorm';
-import {QuestionDto} from './dtos/question.dto';
-import {QuestionMapper} from './mappers/question.mapper';
-import {CreateQuestionDto} from './dtos/create-question.dto';
-import {UpdateQuestionDto} from './dtos/update-question.dto';
-import {UserModel} from "../user/models/user.model";
-import {logger} from "nx/src/utils/logger";
-import {AnswerModel} from "./model/answer.model";
+import { InjectRepository } from '@nestjs/typeorm';
+import { QuestionModel } from './model/question.model';
+import { Repository } from 'typeorm';
+import { QuestionDto } from './dtos/question.dto';
+import { QuestionMapper } from './mappers/question.mapper';
+import { CreateQuestionDto } from './dtos/create-question.dto';
+import { UpdateQuestionDto } from './dtos/update-question.dto';
+import { UserModel } from '../user/models/user.model';
+import { logger } from 'nx/src/utils/logger';
+import { AnswerModel } from './model/answer.model';
 
 @Injectable()
 export class QuestionService {
@@ -23,9 +23,8 @@ export class QuestionService {
     @InjectRepository(UserModel)
     private userModelRepository: Repository<UserModel>,
     @InjectRepository(AnswerModel)
-    private answerModelRepository:Repository<AnswerModel>
-  ) {
-  }
+    private answerModelRepository: Repository<AnswerModel>
+  ) {}
 
   async readAll(): Promise<QuestionDto[]> {
     const foundModels = await this.questionModelRepository.find();
@@ -36,16 +35,14 @@ export class QuestionService {
   }
 
   async readAllByUser(userId: string): Promise<QuestionDto[]> {
-    const foundUser = await this.userModelRepository.findOneBy({id: userId})
+    const foundUser = await this.userModelRepository.findOneBy({ id: userId });
     if (!foundUser) {
-      throw new NotFoundException("User not found");
+      throw new NotFoundException('User not found');
     }
-    const foundModels = await this.questionModelRepository.find(
-      {
-        where: {user: {id: userId}},
-        relations: ['user'],
-      }
-    );
+    const foundModels = await this.questionModelRepository.find({
+      where: { user: { id: userId } },
+      relations: ['user'],
+    });
     if (!foundModels) {
       return [];
     }
@@ -57,17 +54,16 @@ export class QuestionService {
     return QuestionMapper.mapToDto(foundModel);
   }
 
-  async create(dto: CreateQuestionDto,
-               userId: string): Promise<QuestionDto> {
-    const userModel = await this.userModelRepository.findOneBy({id: userId})
-    logger.log(userModel)
+  async create(dto: CreateQuestionDto, userId: string): Promise<QuestionDto> {
+    const userModel = await this.userModelRepository.findOneBy({ id: userId });
+    logger.log(userModel);
     const model = QuestionMapper.mapCreateQuestionToModel(dto, userModel);
     logger.log(model.user);
     if (!userModel) {
-      logger.log("Cannot find user");
+      logger.log('Cannot find user');
       throw new BadRequestException();
     } else if (!model) {
-      logger.log("Cannot find question")
+      logger.log('Cannot find question');
       throw new BadRequestException();
     }
     try {
@@ -95,19 +91,18 @@ export class QuestionService {
   }
 
   async delete(id: string): Promise<void> {
-
     const answerDeleteResult = await this.answerModelRepository.delete({
       parent: { id },
     });
-    const deleteResult = await this.questionModelRepository.delete({id});
-    if (deleteResult.affected === 0 && answerDeleteResult.affected==0) {
+    const deleteResult = await this.questionModelRepository.delete({ id });
+    if (deleteResult.affected === 0 && answerDeleteResult.affected == 0) {
       throw new BadRequestException();
     }
   }
 
   private async readModelById(id: string): Promise<QuestionModel> {
     const foundModel = await this.questionModelRepository.findOne({
-      where: {id},
+      where: { id },
     });
     if (!foundModel) {
       throw new NotFoundException();

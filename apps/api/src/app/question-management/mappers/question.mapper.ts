@@ -1,12 +1,14 @@
-import {CreateQuestionDto} from '../dtos/create-question.dto';
-import {QuestionModel} from '../model/question.model';
-import {UpdateQuestionDto} from '../dtos/update-question.dto';
-import {QuestionDto} from '../dtos/question.dto';
-import {UserModel} from "../../user/models/user.model";
+import { CreateQuestionDto } from '../dtos/create-question.dto';
+import { QuestionModel } from '../model/question.model';
+import { UpdateQuestionDto } from '../dtos/update-question.dto';
+import { QuestionDto } from '../dtos/question.dto';
+import { UserModel } from '../../user/models/user.model';
 
 export class QuestionMapper {
-  static mapCreateQuestionToModel(dto: CreateQuestionDto,
-                                  user: UserModel): QuestionModel {
+  static mapCreateQuestionToModel(
+    dto: CreateQuestionDto,
+    user: UserModel
+  ): QuestionModel {
     return new QuestionModel({
       id: undefined,
       postedBy: user.name,

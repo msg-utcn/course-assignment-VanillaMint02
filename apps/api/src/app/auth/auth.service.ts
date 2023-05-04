@@ -1,18 +1,17 @@
-import {Injectable} from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
-import {JwtTokenDto} from './dto/jwt-token.dto';
-import {JwtPayloadDto} from './dto/jwt-payload.dto';
-import {UserService} from '../user/user.service';
-import {LoginUserDto} from '../user/dtos/login-user.dto';
-import {UserDto} from '../user/dtos/user.dto';
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { JwtTokenDto } from './dto/jwt-token.dto';
+import { JwtPayloadDto } from './dto/jwt-payload.dto';
+import { UserService } from '../user/user.service';
+import { LoginUserDto } from '../user/dtos/login-user.dto';
+import { UserDto } from '../user/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UserService,
     private jwtService: JwtService
-  ) {
-  }
+  ) {}
 
   async validate(dto: LoginUserDto): Promise<UserDto | null> {
     const isValid = await this.usersService.checkCredentials(dto);

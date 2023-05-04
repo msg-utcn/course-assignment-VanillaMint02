@@ -1,16 +1,16 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
-import {QuestionModel} from './question.model';
-import {UserModel} from "../../user/models/user.model";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { QuestionModel } from './question.model';
+import { UserModel } from '../../user/models/user.model';
 
 @Entity()
 export class AnswerModel {
   @PrimaryGeneratedColumn('uuid')
   id?: string;
-  @Column({nullable: false})
+  @Column({ nullable: false })
   content: string;
-  @Column({nullable: false})
+  @Column({ nullable: false })
   rating?: number;
-  @Column({nullable: false})
+  @Column({ nullable: false })
   creationDate: Date;
 
   @ManyToOne(() => QuestionModel, (question) => question.answers, {

@@ -4,24 +4,23 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import {UserModel} from './models/user.model';
-import {Repository} from 'typeorm';
-import {InjectRepository} from '@nestjs/typeorm';
-import {UserDto} from './dtos/user.dto';
-import {UserMapper} from './mappers/user.mapper';
-import {RegisterUserDto} from './dtos/register-user.dto';
-import {LoginUserDto} from './dtos/login-user.dto';
-import {compare, hash} from 'bcrypt';
+import { UserModel } from './models/user.model';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto } from './dtos/user.dto';
+import { UserMapper } from './mappers/user.mapper';
+import { RegisterUserDto } from './dtos/register-user.dto';
+import { LoginUserDto } from './dtos/login-user.dto';
+import { compare, hash } from 'bcrypt';
 import * as bcrypt from 'bcrypt';
-import {saltOrRounds} from './user.config';
+import { saltOrRounds } from './user.config';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserModel)
     private userModelRepository: Repository<UserModel>
-  ) {
-  }
+  ) {}
 
   async getUsers(): Promise<UserDto[]> {
     const foundModels = await this.userModelRepository.find();
@@ -61,7 +60,7 @@ export class UserService {
 
   private async readUserModelById(id: string): Promise<UserModel> {
     const foundModel = await this.userModelRepository.findOne({
-      where: {id},
+      where: { id },
     });
     if (!foundModel) {
       throw new NotFoundException();
@@ -71,7 +70,7 @@ export class UserService {
 
   private async readUserModelByEmail(email: string): Promise<UserModel> {
     const foundModel = await this.userModelRepository.findOne({
-      where: {email},
+      where: { email },
     });
     if (!foundModel) {
       throw new NotFoundException();
