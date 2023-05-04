@@ -13,6 +13,7 @@ import { UserService } from '../user/user.service';
 import { QuestionManagementModule } from '../question-management/question-management.module';
 import { QuestionService } from '../question-management/question.service';
 import { AnswerService } from '../question-management/answer.service';
+import { RolesGuard } from './roles.guard';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AnswerService } from '../question-management/answer.service';
     UserService,
     QuestionService,
     AnswerService,
+    RolesGuard,
   ],
   controllers: [AuthController],
   exports: [JwtAuthGuard, AuthService],

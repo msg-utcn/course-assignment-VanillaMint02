@@ -31,6 +31,11 @@ export class AnswerDto {
     required: true,
   })
   parentId: string;
+  @ApiProperty({
+    description: 'The id of the posting user',
+    required: true,
+  })
+  userId: string;
 
   constructor(values: Partial<AnswerDto>) {
     if (values) {

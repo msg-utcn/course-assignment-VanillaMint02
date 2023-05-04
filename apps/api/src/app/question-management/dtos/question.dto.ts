@@ -46,6 +46,12 @@ export class QuestionDto {
     required: true,
   })
   creationDate: string;
+  @ApiProperty({
+    description: 'The id of the user who owns this question',
+    example: 'an ID generated beforehand',
+    required: true,
+  })
+  userId: string;
 
   constructor(values: Partial<QuestionDto>) {
     if (values) {
@@ -56,6 +62,7 @@ export class QuestionDto {
       this.topic = values.topic;
       this.rating = values.rating;
       this.creationDate = values.creationDate;
+      this.userId = values.userId;
     }
   }
 }
