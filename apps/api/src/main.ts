@@ -18,6 +18,7 @@ async function bootstrap() {
   const globalPrefix = 'api';
   const version = '1.0';
   app.setGlobalPrefix(globalPrefix);
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('StackUnderflow API')
