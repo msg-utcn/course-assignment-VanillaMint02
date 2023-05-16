@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthenticateModel } from '../data-models/authenticate.model';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { RegisterModel } from '../data-models/register.model';
 
 @Injectable({
@@ -18,9 +18,19 @@ export class AuthService {
   }
 
   register(register: RegisterModel): Observable<any> {
-    return this.httpClient.post(
-      'http://localhost:3000/api/auth/register',
-      register
-    );
+    return this.httpClient
+      .post('http://localhost:3000/api/auth/register', register)
+      .pipe(catchError(this.handleError));
+  }
+  handleError(error: HttpErrorResponse) {
+    if (error.status == 0) {
+      console.log(error.error);
+    } else {
+      console.error(
+        `Backend returned code ${error.status}, body was: `,
+        error.error
+      );
+    }
+    return throwError(error);
   }
 }
