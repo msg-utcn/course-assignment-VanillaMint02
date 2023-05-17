@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString } from 'class-validator';
 
 export class UpdateAnswerDto {
+  @IsString()
   @ApiProperty({
     description: 'The content that has to change',
     example:
@@ -8,6 +10,7 @@ export class UpdateAnswerDto {
     required: true,
   })
   content: string;
+  @IsNumber()
   @ApiProperty({
     description: 'new value for rating',
     example: '2',

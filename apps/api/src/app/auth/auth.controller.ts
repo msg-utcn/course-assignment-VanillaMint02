@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { AuthConfig } from './auth.config';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtTokenDto } from './dto/jwt-token.dto';
@@ -28,7 +36,9 @@ export class AuthController {
     return this.authService.login(req.user);
   }
 
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Post('register')
+  @ApiBody({ type: RegisterUserDto })
   async registerUser(@Body() dto: RegisterUserDto): Promise<UserDto> {
     return this.usersService.create(dto);
   }
