@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, DoCheck } from '@angular/core';
-import { AuthenticateModel } from '../../data-models/authenticate.model';
-import { AuthService } from '../../services/auth.service';
+import { AuthenticateModel } from '@course-project/data-models';
+import { LoginService } from '@course-project/auth';
 
 @Component({
   selector: 'course-project-login',
@@ -9,10 +9,12 @@ import { AuthService } from '../../services/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements DoCheck {
-  constructor(private authService: AuthService) {}
+  constructor(private loginService: LoginService) {}
 
   public login(authenticate: AuthenticateModel): void {
-    this.authService.login(authenticate).subscribe();
+    this.loginService.login(authenticate).subscribe((token) => {
+      localStorage.setItem('access_token', token.access_token);
+    });
   }
 
   ngDoCheck() {

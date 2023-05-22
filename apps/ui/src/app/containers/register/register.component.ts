@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, DoCheck } from '@angular/core';
-import { RegisterModel } from '../../data-models/register.model';
-import { AuthService } from '../../services/auth.service';
-import { AuthenticateModel } from '../../data-models/authenticate.model';
-import { HttpErrorResponse } from '@angular/common/http';
+import { RegisterModel } from '@course-project/data-models';
+import { RegisterService } from '@course-project/auth';
 
 @Component({
   selector: 'course-project-register',
@@ -11,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent implements DoCheck {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: RegisterService) {}
   public register(register: RegisterModel) {
     this.authService.register(register).subscribe();
   }

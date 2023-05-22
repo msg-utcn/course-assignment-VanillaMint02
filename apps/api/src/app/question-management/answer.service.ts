@@ -25,7 +25,9 @@ export class AnswerService {
   ) {}
 
   async readAll(): Promise<AnswerDto[]> {
-    const foundModels = await this.answerModelRepository.find();
+    const foundModels = await this.answerModelRepository.find({
+      relations: ['postingUser', 'parent'],
+    });
     if (!foundModels) {
       return [];
     }
@@ -84,7 +86,7 @@ export class AnswerService {
   async readAllByQuestionId(questionId: string): Promise<AnswerDto[]> {
     const foundModels = await this.answerModelRepository.find({
       where: { parent: { id: questionId } },
-      relations: ['parent'],
+      relations: ['postingUser', 'parent'],
     });
     if (!foundModels) {
       return [];

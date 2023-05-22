@@ -18,10 +18,6 @@ export class CreateQuestionDto {
   })
   content: string;
 
-  @IsEnum({
-    entity: QuestionTopic,
-    validator: true,
-  })
   @ApiProperty({
     description: 'The topic of the question',
     enum: QuestionTopic,

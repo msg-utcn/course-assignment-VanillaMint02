@@ -1,26 +1,36 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { AuthenticationModule, authRoutes } from './authentication.module';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegisterComponent } from './containers/register/register.component';
-import { RegisterFormComponent } from './presentational/register-form/register-form.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+// eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
+import { TokenInterceptor } from '@course-project/auth';
+import { AuthModule, authRoutes } from './auth.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AuthenticationModule,
     RouterModule.forRoot([
       {
         path: 'auth',
         children: authRoutes,
       },
+      {
+        path: 'questions',
+        loadChildren: () =>
+          import('@course-project/questions').then(
+            (module) => module.QuestionsModule
+          ),
+      },
     ]),
+    AuthModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

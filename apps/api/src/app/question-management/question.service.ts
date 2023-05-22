@@ -27,7 +27,9 @@ export class QuestionService {
   ) {}
 
   async readAll(): Promise<QuestionDto[]> {
-    const foundModels = await this.questionModelRepository.find();
+    const foundModels = await this.questionModelRepository.find({
+      relations: ['user'],
+    });
     if (!foundModels) {
       return [];
     }
@@ -103,6 +105,7 @@ export class QuestionService {
   private async readModelById(id: string): Promise<QuestionModel> {
     const foundModel = await this.questionModelRepository.findOne({
       where: { id },
+      relations: ['user'],
     });
     if (!foundModel) {
       throw new NotFoundException();

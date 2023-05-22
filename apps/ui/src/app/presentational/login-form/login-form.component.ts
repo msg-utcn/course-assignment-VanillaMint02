@@ -1,5 +1,5 @@
 import { Component, DoCheck, EventEmitter, Output } from '@angular/core';
-import { AuthenticateModel } from '../../data-models/authenticate.model';
+import { AuthenticateModel } from '../../../../../../libs/auth/src/data-models/authenticate.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
